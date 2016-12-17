@@ -15,8 +15,21 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-    
-     <base href="/" />
+
+
+    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyATzNL3BmeVl3J2ibY1JqwcBMsBeRkR9mQ",
+            authDomain: "dropaday-1ed46.firebaseapp.com",
+            databaseURL: "https://dropaday-1ed46.firebaseio.com",
+            storageBucket: "dropaday-1ed46.appspot.com",
+            messagingSenderId: "440966895707"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <base href="/" />
 </head>
 
 <body ng-app="dropadayApp">
@@ -45,7 +58,10 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#/">Home</a></li>
                         <li><a ng-href="#/about">About</a></li>
-                        <li><a ng-href="#/">Contact</a></li>
+                        <li><a ng-href="#/account">Account</a></li>
+                        <li><a ng-href="#/login">Login</a></li>
+                        <li><a ng-href="#/pledge">Pledge</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -62,18 +78,6 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyATzNL3BmeVl3J2ibY1JqwcBMsBeRkR9mQ",
-            authDomain: "dropaday-1ed46.firebaseapp.com",
-            databaseURL: "https://dropaday-1ed46.firebaseio.com",
-            storageBucket: "dropaday-1ed46.appspot.com",
-            messagingSenderId: "440966895707"
-        };
-        firebase.initializeApp(config);
-    </script>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -96,6 +100,8 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/firebase/firebase.js"></script>
+    <script src="bower_components/angularfire/dist/angularfire.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -103,6 +109,9 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/controllers/account.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/pledge.js"></script>
     <!-- endbuild -->
 </body>
 

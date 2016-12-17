@@ -8,10 +8,11 @@
  * Controller of the dropadayApp
  */
 angular.module('dropadayApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('MainCtrl', function ($scope, $firebaseObject) {
+    var ref = firebase.database().ref().child("data");
+    
+    var syncObject = $firebaseObject(ref);
+    
+    syncObject.$bindTo($scope, "data");
+    
   });

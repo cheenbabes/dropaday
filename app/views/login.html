@@ -1,0 +1,11 @@
+<div ng-show="firebaseUser">
+    <p>Hello, {{ firebaseUser.displayName }}</p>
+    <button ng-click="auth.$signOut()">Sign Out</button>
+  </div>
+  <div ng-hide="firebaseUser">
+    <p>Welcome, please sign in.</p>
+    <button ng-click="auth.$signInWithPopup('facebook')">Sign In With Facebook</button>
+  </div>
+
+<pre>{{firebaseUser | json}}
+</pre>
