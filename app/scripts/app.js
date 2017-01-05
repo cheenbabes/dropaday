@@ -56,6 +56,10 @@ app
                   }]
               }
             })
+            .when('/sagepage', {
+              templateUrl: 'views/sagepage.html',
+              controller: 'SagepageCtrl',
+            })
             .otherwise({
                 redirectTo: '/'
             });
