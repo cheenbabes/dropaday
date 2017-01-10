@@ -6,16 +6,24 @@
         <div ng-show="firebaseUser">
             <p>Hello, {{ firebaseUser.displayName }}</p>
             <!--            <button ng-click="auth.$signOut()">Sign Out</button>-->
-            <button type="button" class="btn btn-lg btn-pill btn-info-ouline">Click to Verify Your Pages Today</button>
-            <input type="text" ng-model="data.text"/>
+            <button type="button" class="btn btn-success">Click to Verify Your Pages Today</button>
+            <input type="text" ng-model="data.text" />
+
+            <input type="text" ng-model="pledge.pages" />
         </div>
         <div ng-hide="firebaseUser">
             <p>Pledge Today</p>
-            <button type="button" class="btn btn-lg btn-success-outline" ng-click="auth.$signInWithPopup('facebook')">
+            <button type="button" class="btn btn-primary-outline" ng-click="auth.$signInWithPopup('facebook')">
                 <span class="icon icon-facebook"></span>Sign Up
             </button>
         </div>
 
+        <h1>You said {{data.text}}</h1>
+
+        <h1>You said {{pledge.pages}}</h1>
+            
+        <img ng-src="{{firebaseUser.photoURL}}"/>
+            
 
 
         <pre>{{firebaseUser | json}}

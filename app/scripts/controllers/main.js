@@ -8,21 +8,27 @@
  * Controller of the dropadayApp
  */
 angular.module('dropadayApp')
-    .controller('MainCtrl', function ($scope, $firebaseObject, Auth) {
-        var ref = firebase.database().ref().child("users/");
+    .controller('MainCtrl', function ($scope, $firebaseObject, Auth, firebase) {
+
+        $scope.auth = Auth;
+
+        $scope.auth.$onAuthStateChanged(function (firebaseUser) {
+            $scope.firebaseUser = firebaseUser;
+            
+            console.log(firebaseUser)
+            
+            var userRef = firebase.database().ref().child("users/" + firebaseUser.uid);
+            var syncPledge = $firebaseObject(userRef);
+            syncPledge.$bindTo($scope, "pledge")
+            
+        });
+    
+
+        var ref = firebase.database().ref().child("data");
 
         var syncObject = $firebaseObject(ref);
 
         syncObject.$bindTo($scope, "data");
 
-        $scope.auth = Auth;
-        $scope.auth.$onAuthStateChanged(function (firebaseUser) {
-            $scope.firebaseUser = firebaseUser;
-        });
 
-        if ($scope.firebaseUser) {
-            var query = Ref.child('users/' + firebaseUser.uid);
-            $scope.thisUser = $firebaseObject(query);
-            $scope.thisUser.pledge = 5
-        }
     });
