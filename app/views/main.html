@@ -1,7 +1,10 @@
 <div class="row">
     <div class="col-md-6">One chart here
         <pre>{{userList | json}}</pre>
+        
+        total pages: {{totalPages}}
     
+        date test: {{yyyy}}
     
     </div>
     <div class="col-md-6">Another chart here? annd The facebook login button
@@ -10,7 +13,7 @@
         <div ng-show="firebaseUser">
             <p>Hello, {{ firebaseUser.displayName }}</p>
             <!--            <button ng-click="auth.$signOut()">Sign Out</button>-->
-            <button type="button" class="btn btn-success">Click to Verify Your Pages Today</button>
+            <button type="button" class="btn btn-success" ng-click="reportDailyScore()">Click to Verify Your Pages Today</button>
             <input type="text" ng-model="data.text" />
 
             <input type="text" ng-model="pledge.pages" />
