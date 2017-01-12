@@ -21,12 +21,6 @@ angular.module('dropadayApp')
             syncPledge.$bindTo($scope, "pledge");
 
         });
-
-        ////////////////TEST////////
-        var ref = firebase.database().ref().child("data");
-        var syncObject = $firebaseObject(ref);
-        syncObject.$bindTo($scope, "data");
-        ////////////////////////////
     
         //Get the list of all signed up users and their scores
         var userEndpoint = firebase.database().ref().child("users");
@@ -46,6 +40,9 @@ angular.module('dropadayApp')
         //by default, submit the user's pledge.
         //otherwise, provide input to submit his own score
         //we should probably sanitize the input here as well
+        var _user = $scope.auth.$getAuth();
+        var _userInfo = $firebaseObject(firebase.database().ref().child("users/" + _user.uid));
+    
         $scope.reportDailyScore = function() {
             var dailyScoresEndpoint = firebase.database().ref().child("daily");
             var dateString = (new Date()).toISOString().slice(0,10).replace(/-/g,"")
@@ -59,8 +56,8 @@ angular.module('dropadayApp')
             console.log("about to add to array");
             var dailyScoresArray = $firebaseArray(dailyScoresEndpoint.child(dateString));
             dailyScoresArray.$add({
-                user: "firebaseUser",
-                pages: pledgedPages,
+                user: _user,
+                pages: _userInfo.pages,
                 time: new Date()
             });
             
