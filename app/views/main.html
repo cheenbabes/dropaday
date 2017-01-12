@@ -1,4 +1,7 @@
 <div class="row">
+    
+    
+    
     <div class="col-md-6">One chart here
         <pre>{{userList | json}}</pre>
         
@@ -7,16 +10,28 @@
         date test: {{yyyy}}
     
     </div>
+    
+    
+    
     <div class="col-md-6">Another chart here? annd The facebook login button
         <br>
 
         <div ng-show="firebaseUser">
-            <p>Hello, {{ firebaseUser.displayName }}</p>
-            <!--            <button ng-click="auth.$signOut()">Sign Out</button>-->
-            <button type="button" class="btn btn-success" ng-click="reportDailyScore()">Click to Verify Your Pages Today</button>
-            <input type="text" ng-model="data.text" />
+            <p>Hello, {{ firebaseUser.displayName }}<br>
+                Submit your daily pledge to read a number of pages of Srila Prabhupada's book below:
+            </p>
+            
+            <input type="number" ng-hide="otherMode" ng-model="pledge.pages"/>
+            <button type="button" class="btn btn-success" ng-click="showConfirmation(pledge.pages)">Submit</button>
+            
+            <h5>You're currently pledging {{pledge.pages}} pages a day</h5><br>
+            
+            <button type="button" class="btn btn-success" ng-click="reportDailyScore()">Click to Verify That You Read {{pledge.pages}} today</button>
+            <button type="button" class="btn btn-warning" ng-click="otherAmount()">Read a different amount?</button>
+            <input type="number" ng-show="otherMode" ng-model="other.pages"/>
+            
 
-            <input type="text" ng-model="pledge.pages" />
+            
         </div>
         <div ng-hide="firebaseUser">
             <p>Pledge Today</p>
@@ -25,9 +40,6 @@
             </button>
         </div>
 
-        <h1>You said {{data.text}}</h1>
-
-        <h1>You said {{pledge.pages}}</h1>
             
         <img ng-src="{{firebaseUser.photoURL}}"/>
             

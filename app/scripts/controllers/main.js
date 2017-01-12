@@ -33,13 +33,10 @@ angular.module('dropadayApp')
             }, 0);
         });
     
-    
-//    console.log("pledge pages" + $scope.pledge.pages)
         
         //function to report daily scores
         //by default, submit the user's pledge.
         //otherwise, provide input to submit his own score
-        //we should probably sanitize the input here as well
         var _user = $scope.auth.$getAuth();
         var _userInfo = $firebaseObject(firebase.database().ref().child("users/" + _user.uid));
     
@@ -47,21 +44,39 @@ angular.module('dropadayApp')
             var dailyScoresEndpoint = firebase.database().ref().child("daily");
             var dateString = (new Date()).toISOString().slice(0,10).replace(/-/g,"")
             
-            //this needs a real value!
-            var pledgedPages = 20;
-            
-            //Some manipulation here to check for custom input
+            //check to see if the other box has anything, if so, take that value, otherwise, pages will be read from the user pledge
+            var pages;
+            if $scope.other.pages != null and !isNaN($scope.other.pages){
+                pages = $scope.other.pages;
+            }else{
+                pages = _userInfo.pages;
+            }
             
             //Add to array
             console.log("about to add to array");
-            var dailyScoresArray = $firebaseArray(dailyScoresEndpoint.child(dateString));
+            //write to endpoint indexed by the user so multiple submissions will overwrite the same info, eg user can't submit more than 1 report per day
+            var dailyScoresArray = $firebaseArray(dailyScoresEndpoint.child(dateString).child(_user.uid));
             dailyScoresArray.$add({
+                //add the entire user to the object
                 user: _user,
-                pages: _userInfo.pages,
+                pages: _userInfo.pages, //verify that this works, then change to pages
                 time: new Date()
             });
             
             console.log("Successfully added to array endpoint");
+        }
+        
+        //dummy confirmation, data is actualy bound and live at the endpoint.
+        $scope.showConfirmation = function(pages){
+          //Flash.create('success', "Thank you for pledging to read " + pages + " of Srila Prabhupada's books a day.");
+        };
+        
+        
+        $scope.otherAmount = function(){
+            //User read some other amount than the pledge
+            //Make the other input available and hide the pledge window.
+            $scope.otherMode = true;
+
         }
 
         
