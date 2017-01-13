@@ -12,7 +12,7 @@
     <div class="col-md-6">
         <div ng-show="firebaseUser">
             <p>Hello, {{ firebaseUser.displayName }}
-                <br> Submit your daily pledge to read a number of pages of Srila Prabhupada's book below:
+                <br> <span ng-hide="otherMode">Submit your daily pledge to read a number of pages of Srila Prabhupada's book below:</span>
             </p>
 
 
@@ -26,14 +26,13 @@
 
 
             <h5>You're currently pledging to read {{pledge.pages}} pages a day.</h5>
-            <br>
 
-            <button type="button" class="btn btn-success" ng-click="reportDailyScore(pledge.pages)" ng-hide="otherMode">Click to Verify That You Read {{pledge.pages}} today</button>
+            <button type="button" class="btn btn-success" ng-click="reportDailyScore(pledge.pages)" ng-hide="otherMode">Click to Verify That You Read {{pledge.pages}} pages Today</button>
             <button type="button" class="btn btn-info" ng-click="otherAmount()" ng-hide="otherMode">Read a different amount?</button>
 
             <form class="form-inline" ng-show="otherMode">
                 <div class="form-group">
-                    <input type="text" ng-model="mode.pages" class="form-control" placeholder="Enter the number of pages you read.">
+                    <input type="number" ng-model="mode.pages" class="form-control" placeholder="Enter the number of pages you read." size=200>
                 </div>
                 <button type="button" class="btn btn-success" ng-click="reportDailyScore(mode.pages)">Submit</button>
                 <button type="button" class="btn btn-danger" ng-click="otherMode = false">Cancel</button>
