@@ -21,14 +21,14 @@
                 Submit your daily pledge to read a number of pages of Srila Prabhupada's book below:
             </p>
             
-            <input type="number" ng-hide="otherMode" ng-model="pledge.pages"/>
-            <button type="button" class="btn btn-success" ng-click="showConfirmation(pledge.pages)">Submit</button>
+            <input type="number" ng-hide="otherMode" ng-model="pledge.pages" class="form-control"/>
+            <button type="button" class="btn btn-success" ng-click="showConfirmation(pledge.pages)" ng-hide="otherMode">Submit</button>
             
             <h5>You're currently pledging {{pledge.pages}} pages a day</h5><br>
             
-            <button type="button" class="btn btn-success" ng-click="reportDailyScore()">Click to Verify That You Read {{pledge.pages}} today</button>
+            <button type="button" class="btn btn-success" ng-click="reportDailyScore()" ng-hide="otherMode">Click to Verify That You Read {{pledge.pages}} today</button>
             <button type="button" class="btn btn-warning" ng-click="otherAmount()">Read a different amount?</button>
-            <input type="number" ng-show="otherMode" ng-model="other.pages"/>
+            <input type="number" ng-show="otherMode" ng-model="other.pages" class="form-control"/>
             
 
             
