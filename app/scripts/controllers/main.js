@@ -55,7 +55,9 @@ angular.module('dropadayApp')
 
         }
 
-        $scope.reportDailyScore = function () {
+        $scope.reportDailyScore = function (pledgedPages) {
+            console.log("pledged pages" + pledgedPages);
+            
             var dailyScoresEndpoint = firebase.database().ref().child("daily");
             var dateString = (new Date()).toISOString().slice(0, 10).replace(/-/g, "")
 
@@ -65,7 +67,7 @@ angular.module('dropadayApp')
             _userInfo.$loaded().then(function (x){
                 console.log(x.pages);
                 var dailyScoresObject = $firebaseObject(dailyScoresEndpoint.child(dateString).child(_user.uid));
-                dailyScoresObject.pages = x.pages;
+                dailyScoresObject.pages = pledgedPages;
                 dailyScoresObject.user = _user.uid;
                 dailyScoresObject.$save().then(function (ref) {
                     console.log("Success")

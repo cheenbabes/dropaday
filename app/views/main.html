@@ -1,37 +1,45 @@
 <div class="row">
-    
-    
-    
+
+
+
     <div class="col-md-6">One chart here
-        <pre>{{userList | json}}</pre>
-        
-        total pages: {{totalPages}}
-    
-        date test: {{yyyy}}
-    
+        <pre>{{userList | json}}</pre> total pages: {{totalPages}} date test: {{yyyy}}
+
     </div>
-    
-    
-    
-    <div class="col-md-6">Another chart here? annd The facebook login button
-        <br>
 
+
+
+    <div class="col-md-6">
         <div ng-show="firebaseUser">
-            <p>Hello, {{ firebaseUser.displayName }}<br>
-                Submit your daily pledge to read a number of pages of Srila Prabhupada's book below:
+            <p>Hello, {{ firebaseUser.displayName }}
+                <br> Submit your daily pledge to read a number of pages of Srila Prabhupada's book below:
             </p>
-            
-            <input type="number" ng-hide="otherMode" ng-model="pledge.pages" class="form-control"/>
-            <button type="button" class="btn btn-success" ng-click="showConfirmation(pledge.pages)" ng-hide="otherMode">Submit</button>
-            
-            <h5>You're currently pledging {{pledge.pages}} pages a day</h5><br>
-            
-            <button type="button" class="btn btn-success" ng-click="reportDailyScore()" ng-hide="otherMode">Click to Verify That You Read {{pledge.pages}} today</button>
-            <button type="button" class="btn btn-warning" ng-click="otherAmount()">Read a different amount?</button>
-            <input type="number" ng-show="otherMode" ng-model="other.pages" class="form-control"/>
-            
 
-            
+
+            <form class="form-inline">
+                <div class="form-group">
+                    <input type="number" ng-hide="otherMode" ng-model="pledge.pages" class="form-control" placeholder={{pledge.pages}}/>
+                </div>
+                <button type="button" class="btn btn-success" ng-click="showConfirmation(pledge.pages)" ng-hide="otherMode">Submit</button>
+            </form>
+
+
+
+            <h5>You're currently pledging to read {{pledge.pages}} pages a day.</h5>
+            <br>
+
+            <button type="button" class="btn btn-success" ng-click="reportDailyScore(pledge.pages)" ng-hide="otherMode">Click to Verify That You Read {{pledge.pages}} today</button>
+            <button type="button" class="btn btn-info" ng-click="otherAmount()" ng-hide="otherMode">Read a different amount?</button>
+
+            <form class="form-inline" ng-show="otherMode">
+                <div class="form-group">
+                    <input type="text" ng-model="mode.pages" class="form-control" placeholder="Enter the number of pages you read.">
+                </div>
+                <button type="button" class="btn btn-success" ng-click="reportDailyScore(mode.pages)">Submit</button>
+                <button type="button" class="btn btn-danger" ng-click="otherMode = false">Cancel</button>
+            </form>
+
+
         </div>
         <div ng-hide="firebaseUser">
             <p>Pledge Today</p>
@@ -40,9 +48,9 @@
             </button>
         </div>
 
-            
-        <img ng-src="{{firebaseUser.photoURL}}"/>
-            
+
+        <img ng-src="{{firebaseUser.photoURL}}" />
+
 
 
         <pre>{{firebaseUser | json}}
