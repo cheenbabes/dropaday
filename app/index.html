@@ -58,8 +58,10 @@
                     <ul class="nav navbar-nav">
                         <li><a href="#/">Home</a></li>
                         <li><a ng-href="#/sagepage">Be a Sage Page By Page</a></li>
+<!--
                         <li><a ng-href="#/login">Login</a></li>
                         <li><a ng-href="#/pledge">Pledge</a></li>
+-->
 
                     </ul>
                 </div>
@@ -68,7 +70,7 @@
     </div>
 
     <div class="container">
-<!--        <div flash-message="5000"></div>-->
+        <!--        <div flash-message="5000"></div>-->
         <div ng-view=""></div>
     </div>
 
@@ -89,15 +91,7 @@
         ga('send', 'pageview');
     </script>
 
-    <script>
-        window.addEventListener("load", function () {
-            setTimeout(triggerCharts, 400);
-        }, false);
 
-        function triggerCharts() {
-            $(document).trigger('redraw.bs.charts');
-        }
-    </script>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -119,10 +113,20 @@
 
     <script src="scripts/libraries/chart.js"></script>
     <script src="scripts/libraries/toolkit.js"></script>
-    
+
     <script src="scripts/directives/ngHideAuth.js"></script>
     <script src="scripts/directives/ngShowAuth.js"></script>
     <!-- endbuild -->
+
+    <script>
+        window.addEventListener("load", function () {
+            setTimeout(triggerCharts, 400);
+        }, false);
+
+        function triggerCharts() {
+            $(document).trigger('redraw.bs.charts');
+        }
+    </script>
 </body>
 
 </html>

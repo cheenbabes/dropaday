@@ -2,8 +2,29 @@
 
 
 
-    <div class="col-md-6">One chart here
-        <pre>{{userList | json}}</pre> total pages: {{totalPages}} date test: {{yyyy}}
+    <div class="col-md-6">
+
+        <div class="ex-line-graphs m-b-md">
+            <canvas class="ex-line-graph" width="600" height="400" data-chart="line" data-scale-line-color="transparent" data-scale-grid-line-color="rgba(255,255,255,.05)" data-scale-font-color="#a2a2a2" data-labels="['','Aug 29','','','Sept 5','','','Sept 12','','','Sept 19','']" data-value="[{data: [2500, 3300, 2512, 2775, 2498, 3512, 2925, 4275, 3507, 3825, 3445, 3985]}]">
+            </canvas>
+        </div>
+        <div class="ex-line-graphs m-b-md">
+            <canvas class="ex-line-graph" width="600" height="400" data-chart="bar" data-scale-line-color="transparent" data-scale-grid-line-color="rgba(255,255,255,.05)" data-scale-font-color="#a2a2a2" data-labels="['August','September','October','November','December','January','February']" data-value="[{ label: 'First dataset', data: [65, 59, 80, 81, 56, 55, 40] }, { label: 'Second dataset', data: [28, 48, 40, 19, 86, 27, 90] }]">
+            </canvas>
+        </div>
+
+
+        <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels"> chart-series="series"
+        </canvas>
+
+
+        <pre>{{userList | json}}</pre>
+        <pre>total pages pledge: {{totalPagesPledged}}</pre>
+        <pre>total pages read: {{totalPagesRead}} </pre>
+        <pre>{{dailyArray | json}}</pre>
+        <pre>{{dailyMap | json}}</pre>
+
+
 
     </div>
 
@@ -18,25 +39,26 @@
 
             <form class="form-inline">
                 <div class="form-group">
-                    <input type="number" ng-hide="otherMode" ng-model="pledge.pages" class="form-control" placeholder={{pledge.pages}}/>
+                    <input type="number" ng-model="pledge.pages" class="form-control" placeholder={{pledge.pages}}/>
                 </div>
-                <button type="button" class="btn btn-success" ng-click="showConfirmation(pledge.pages)" ng-hide="otherMode">Submit</button>
+                <button type="button" class="btn btn-success" ng-click="showConfirmation(pledge.pages)">Submit</button>
             </form>
 
 
 
             <h5>You're currently pledging to read {{pledge.pages}} pages a day.</h5>
 
-            <button type="button" class="btn btn-success" ng-click="reportDailyScore(pledge.pages)" ng-hide="otherMode">Click to Verify That You Read {{pledge.pages}} pages Today</button>
-            <button type="button" class="btn btn-info" ng-click="otherAmount()" ng-hide="otherMode">Read a different amount?</button>
+            <button type="button" class="btn btn-success" ng-click="reportDailyScore(pledge.pages)" ng-hide="otherMode || submitted">Click to Verify That You Read {{pledge.pages}} pages Today</button>
+            <button type="button" class="btn btn-info" ng-click="otherAmount()" ng-hide="otherMode || submitted">Read a different amount?</button>
 
-            <form class="form-inline" ng-show="otherMode">
+            <form class="form-inline" ng-hide="!otherMode || submitted">
                 <div class="form-group">
                     <input type="number" ng-model="mode.pages" class="form-control" placeholder="Enter the number of pages you read." size=200>
                 </div>
                 <button type="button" class="btn btn-success" ng-click="reportDailyScore(mode.pages)">Submit</button>
                 <button type="button" class="btn btn-danger" ng-click="otherMode = false">Cancel</button>
             </form>
+            <button ng-click="auth.$signOut()" class="btn btn-default">Sign Out</button>
 
 
         </div>
@@ -44,6 +66,9 @@
             <p>Pledge Today</p>
             <button type="button" class="btn btn-primary-outline" ng-click="auth.$signInWithPopup('facebook')">
                 <span class="icon icon-facebook"></span>Sign Up
+            </button>
+            <button type="button" class="btn btn-danger-outline" ng-click="auth.$signInWithPopup('google')">
+                <span class="icon icon-google"></span>Sign Up
             </button>
         </div>
 

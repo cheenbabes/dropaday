@@ -10,8 +10,18 @@
 angular.module('dropadayApp')
     .controller('MainCtrl', function ($scope, $firebaseObject, Auth, firebase, $firebaseArray) {
 
+        $scope.auth = Auth;
+        window.addEventListener("load", function () {
+            setTimeout(triggerCharts, 400);
+        }, false);
+
+        function triggerCharts() {
+            $(document).trigger('redraw.bs.charts');
+        }
+
         //Hide other mode by default
         $scope.otherMode = false;
+        $scope.submitted = false;
 
         //Gets the firebase User and allows user to make their pledge of pages
         Auth.$onAuthStateChanged(function (firebaseUser) {
@@ -30,17 +40,33 @@ angular.module('dropadayApp')
 
             //tally total scores call $loaded() because async callback -- make sure entire array is loaded before reducing
             $scope.userList.$loaded().then(function (x) {
-                $scope.totalPages = x.reduce(function (i, user) {
+                $scope.totalPagesPledged = x.reduce(function (i, user) {
                     return i + parseInt(user.pages);
                 }, 0);
             });
         });
 
+        //Get the list of daily score lists
+        var endTime = (new Date()).getTime + 150000
+        var startTime = (new Date(0, 0, 0, 0)).valueOf()
+        var dailyEndpoint = firebase.database().ref().child("daily").orderByChild("time").startAt(startTime).endAt(endTime);
 
+        dailyEndpoint.on('value', function (snapshot) {
+            $scope.dailyArray = $firebaseArray(dailyEndpoint);
+            $scope.dailyArray.$loaded().then(function (x) {
+                console.log(x);
+                console.log("length: " + x.length);
 
+                $scope.totalPagesRead = x.reduce(function (i, score) {
+                    return i + parseInt(score.pages);
+                }, 0)
+            })
+
+        });
 
         //dummy confirmation, data is actualy bound and live at the endpoint.
         $scope.showConfirmation = function (pages) {
+
             //Flash.create('success', "Thank you for pledging to read " + pages + " of Srila Prabhupada's books a day.");
         };
 
@@ -64,25 +90,23 @@ angular.module('dropadayApp')
             if (clear) {
                 console.log("Good job, it's a number")
                 var dailyScoresEndpoint = firebase.database().ref().child("daily");
-                var dateString = (new Date()).toISOString().slice(0, 10).replace(/-/g, "")
-
                 var _user = Auth.$getAuth();
-                var _userInfo = $firebaseObject(firebase.database().ref().child("users/" + _user.uid));
-
-                _userInfo.$loaded().then(function (x) {
-                    var dailyScoresObject = $firebaseObject(dailyScoresEndpoint.child(dateString).child(_user.uid));
-                    dailyScoresObject.pages = pledgedPages;
-                    dailyScoresObject.user = _user.uid;
-                    dailyScoresObject.$save().then(function (ref) {
-                        console.log("Success")
-                    }, function (error) {
-                        console.log(error);
-                    });
-
+                var dailyScoresArray = $firebaseArray(dailyScoresEndpoint);
+                dailyScoresArray.$add({
+                    pages: pledgedPages,
+                    user: _user.uid,
+                    time: firebase.database.ServerValue.TIMESTAMP
                 });
+
+                $scope.submitted = true;
+
             }
 
         }
+        
+        $scope.labels = ['2006', '2007'];
+        $scope.series = ['Series A', 'Series B'];
+        $scope.data = [[65, 59], [28,48]];
 
 
 
