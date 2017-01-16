@@ -1,34 +1,81 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <img class="img-responsive center-block" src="images/lg-logo.png">
+            <img class="img-responsive center-block" src="images/Web_Banner_PNG.png">
             <p class="text-center">Fill out the form below to see how many pages a day it would take to read a book.</p>
         </div>
     </div>
 </div>
 
+<hr class="m-t">
 
 
-<form class="form-horizontal">
-    <div class="form-group">
-        <label for="inputBook" class="col-sm-2 control-label">Book</label>
-        <div class="col-sm-10">
-            <select class="form-control" ng-model="book" ng-options="book.book for book in books track by book.id"></select>
+<div class="row">
+    <div class="col-md-6">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputBook" class="col-sm-2 control-label">Book</label>
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="book" ng-options="book.book for book in books track by book.id"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputMonth" class="col-sm-2 control-label">Months</label>
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="month" ng-options="month for month in allMonths track by month"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputYear" class="col-sm-2 control-label">Years</label>
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="year" ng-options="year for year in allYears track by year"></select>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12">
+                <!--col-md-offset-2-->
+                <div class="alert alert-info center">
+                    To read <b>{{book.book}}</b> in {{year == 0 ? '' : year}} {{year == 1 ? 'year' : year !== 0 ? 'years' :'' }} {{year !== 0 && month !== 0 ? 'and' : ''}} {{month == 0 ? '' : month}} {{month == 1 ? 'month' : month !== 0 ? 'months': ''}} you will have to read <b>{{formatPages(book, year, month)}} </b>{{formatPages(book, year, month) == 1 ? 'page' : 'pages'}} a day.
+                </div>
+                <div ng-hide="firebaseUser">
+                    <button type="button" class="btn btn-primary" ng-click="auth.$signInWithPopup('facebook')">
+                        <span class="icon icon-facebook"></span> Pledge with Facebook
+                    </button>
+                    <button type="button" class="btn btn-danger" ng-click="auth.$signInWithPopup('google')">
+                        <span class="icon icon-google-plus"></span> Pledge with Google
+                    </button>
+                </div>
+
+                <div ng-show="firebaseUser">
+                    <div class="alert alert-success">
+                        I pledge to read {{formatPages(book, year, month)}} {{formatPages(book, year, month) == 1 ? 'page' : 'pages'}} of {{book.book}} a day.
+                        <button class="btn btn-primary" ng-click="pledgePages(book.book, formatPages(book, year, month))">Pledge!</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <label for="inputMonth" class="col-sm-2 control-label">Months</label>
-        <div class="col-sm-10">
-            <select class="form-control" ng-model="month" ng-options="month for month in allMonths track by month"></select>
+    <div class="col-md-6">
+        <div class="list-group">
+            <h4 class="list-group-header" style="margin-top:0px;">Recent Pledges</h4>
+            <div ng-repeat="user in userList">
+                <a class="list-group-item" ng-href="#/user/{{rank.id}}">
+                    <span class="pull-right text-muted">{{user.time | date: 'MMM dd, yyyy H:mm a '}}</span> {{user.name}} pledged to read {{user.pages}} pages of {{user.book}}
+                </a>
+            </div>
+
         </div>
+
+        </ul>
     </div>
-    <div class="form-group">
-        <label for="inputYear" class="col-sm-2 control-label">Years</label>
-        <div class="col-sm-10">
-            <select class="form-control" ng-model="year" ng-options="year for year in allYears track by year"></select>
-        </div>
-    </div>
-</form>
+</div>
+
+<div ng-show="firebaseUser">
+    <button ng-click="auth.$signOut()" class="btn btn-default">Sign Out</button>
+</div>
+
+
 
 <!--
 notes:
@@ -39,10 +86,18 @@ notes:
 -->
 
 
+<!--
 <div class="row">
-    <div class="col-md-offset-2 col-md-10">
+    <div class="col-md-10">
+        col-md-offset-2
         <div class="alert alert-success center">
-            To read <b>{{book.book}}</b> in {{year == 0 ? '' : year}} {{year == 1 ? 'year' : year !== 0 ? 'years' :'' }} {{year !== 0 && month !== 0 ? 'and' : ''}} {{month == 0 ? '' : month}} {{month == 1 ? 'month' : month !== 0 ? 'months': ''}} you will have to read <b>{{formatPages(book, year, month)}} </b>{{formatPages(book, year, month) == 1 ? 'page' : 'pages'}} a day
+            To read <b>{{book.book}}</b> in {{year == 0 ? '' : year}} {{year == 1 ? 'year' : year !== 0 ? 'years' :'' }} {{year !== 0 && month !== 0 ? 'and' : ''}} {{month == 0 ? '' : month}} {{month == 1 ? 'month' : month !== 0 ? 'months': ''}} you will have to read <b>{{formatPages(book, year, month)}} </b>{{formatPages(book, year, month) == 1 ? 'page' : 'pages'}} a day.
+            <button type="button" class="btn btn-primary" ng-click="auth.$signInWithPopup('facebook')">
+                <span class="icon icon-facebook"></span> Pledge with Facebook
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="auth.$signInWithPopup('google')">
+                <span class="icon icon-google-plus"></span> Pledge with Google
+            </button>
         </div>
     </div>
-</div>
+</div>-->

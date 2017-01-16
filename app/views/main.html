@@ -32,7 +32,7 @@
 
     <div class="col-md-6">
         <div ng-show="firebaseUser">
-            <p>Hello, {{ firebaseUser.displayName }}
+            <p>Hello, {{ firebaseUser.providerData[0].displayName }}
                 <br> <span ng-hide="otherMode">Submit your daily pledge to read a number of pages of Srila Prabhupada's book below:</span>
             </p>
 
@@ -73,7 +73,7 @@
         </div>
 
 
-        <img ng-src="{{firebaseUser.photoURL}}" />
+        <img ng-src="{{firebaseUser.providerData[0].photoURL}}" />
 
 
 

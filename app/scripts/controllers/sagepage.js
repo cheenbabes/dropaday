@@ -8,7 +8,51 @@
  * Controller of the dropadayApp
  */
 angular.module('dropadayApp')
-    .controller('SagepageCtrl', function ($scope) {
+    .controller('SagepageCtrl', function ($scope, $firebaseObject, Auth, firebase, $firebaseArray) {
+
+        $scope.auth = Auth;
+        //Gets the firebase User and allows user to make their pledge of pages
+        Auth.$onAuthStateChanged(function (firebaseUser) {
+            $scope.firebaseUser = firebaseUser;
+            Flash.create('success', "Thank you for logging in!");
+            //            var userRef = firebase.database().ref().child("users/" + firebaseUser.uid);
+            //            var syncPledge = $firebaseObject(userRef);
+            //            syncPledge.$bindTo($scope, "pledge");
+
+        });
+
+        //Get the list of all signed up users and their scores but update it in real time via async 'on' call
+        var userEndpoint = firebase.database().ref().child("users");
+        userEndpoint.on('value', function (snapshot) {
+            $scope.userList = $firebaseArray(userEndpoint);
+
+            //tally total scores call $loaded() because async callback -- make sure entire array is loaded before reducing
+            $scope.userList.$loaded().then(function (x) {
+                $scope.totalPagesPledged = x.reduce(function (i, user) {
+                    return i + parseInt(user.pages);
+                }, 0);
+            });
+        });
+
+        $scope.pledgePages = function (book, pages) {
+            var _user = Auth.$getAuth();
+            var _userObj = $firebaseObject(firebase.database().ref().child("users").child(_user.uid));
+            //use the promise to make sure the object is loaded before writing
+            _userObj.$loaded().then(function (x) {
+                _userObj.pages = parseInt(pages);
+                _userObj.book = book;
+                _userObj.time = firebase.database.ServerValue.TIMESTAMP;
+                _userObj.name = _user.providerData[0].displayName; 
+                
+                _userObj.$save().then(function(){
+                    console.log("Successfully saved");
+                }, function(error){
+                    console.log("Error: ", error);
+                })
+            });
+
+        }
+
         $scope.books = [
             {
                 id: 1,
@@ -48,11 +92,11 @@ angular.module('dropadayApp')
 ];
 
         $scope.allMonths = [];
-        for (var i = 0; i < 13; i++) {
+        for (var i = 0; i <= 12; i++) {
             $scope.allMonths.push(i);
         };
         $scope.allYears = [];
-        for (var i = 0; i < 11; i++) {
+        for (var i = 0; i <= 10; i++) {
             $scope.allYears.push(i);
         };
 

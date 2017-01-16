@@ -12,18 +12,19 @@ var app = angular
     .module('dropadayApp', [
     'ngResource',
     'ngRoute',
-    'firebase'
+    'firebase',
+    'ngFlash'
   ]);
 
 
-app.run(["$rootScope", "$location", function($rootScope, $location) {
-  $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
-    // We can catch the error thrown when the $requireSignIn promise is rejected
-    // and redirect the user back to the home page
-    if (error === "AUTH_REQUIRED") {
-      $location.path("/login");
-    }
-  });
+app.run(["$rootScope", "$location", function ($rootScope, $location) {
+    $rootScope.$on("$routeChangeError", function (event, next, previous, error) {
+        // We can catch the error thrown when the $requireSignIn promise is rejected
+        // and redirect the user back to the home page
+        if (error === "AUTH_REQUIRED") {
+            $location.path("/login");
+        }
+    });
 }]);
 
 
@@ -32,25 +33,25 @@ app
     .config(function ($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+                templateUrl: 'views/sagepage.html',
+                controller: 'SagepageCtrl'
             })
             .when('/login', {
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
             })
             .when('/pledge', {
-              templateUrl: 'views/pledge.html',
-              controller: 'PledgeCtrl',
-              resolve:{
-                  "currentAuth": ["Auth", function(Auth){
-                      return Auth.$requireSignIn();
+                templateUrl: 'views/pledge.html',
+                controller: 'PledgeCtrl',
+                resolve: {
+                    "currentAuth": ["Auth", function (Auth) {
+                        return Auth.$requireSignIn();
                   }]
-              }
+                }
             })
-            .when('/sagepage', {
-              templateUrl: 'views/sagepage.html',
-              controller: 'SagepageCtrl',
+            .when('/test', {
+                templateUrl: 'views/main.html',
+                controller: 'MainCtrl',
             })
             .otherwise({
                 redirectTo: '/'

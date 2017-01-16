@@ -14,6 +14,7 @@
     <!-- build:css(.tmp) styles/main.css -->
     <!--    <link rel="stylesheet" href="styles/main.css">-->
     <link rel="stylesheet" href="styles/toolkit-light.css">
+    <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 
 
@@ -58,7 +59,8 @@
                     <ul class="nav navbar-nav">
                         <li><a href="#/">Home</a></li>
                         <li><a ng-href="#/sagepage">Be a Sage Page By Page</a></li>
-<!--
+                        <li><a ng-href="#/test">Test</a></li>
+                        <!--
                         <li><a ng-href="#/login">Login</a></li>
                         <li><a ng-href="#/pledge">Pledge</a></li>
 -->
@@ -70,7 +72,7 @@
     </div>
 
     <div class="container">
-        <!--        <div flash-message="5000"></div>-->
+        <div flash-message="5000"></div>
         <div ng-view=""></div>
     </div>
 
@@ -101,6 +103,7 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="bower_components/angular-flash-alert/dist/angular-flash.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
